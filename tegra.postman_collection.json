@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "c9bc0e3a-f116-4dce-b39a-bf2c8cd50ece",
+		"name": "tegra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "passagens",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": \"BSB\",\n    \"destino\": \"VCP\",\n    \"data\": \"2019-02-10T00:00:00.000Z\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/tegra-voos/voos-disponiveis",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tegra-voos",
+						"voos-disponiveis"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "passagens",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"siglaAeroportoOrigem\": \"A\",\n    \"siglaAeroportoDestino\": \"B\",\n    \"data\": \"2019-01-01T00:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/tegra-voos-0.0.1-SNAPSHOT/passagens/teste",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tegra-voos-0.0.1-SNAPSHOT",
+								"passagens",
+								"teste"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Mar 2019 02:08:58 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2019-03-28T02:08:58.930+0000\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"No message available\",\n    \"path\": \"/tegra-voos-0.0.1-SNAPSHOT/passagens/teste\"\n}"
+				}
+			]
+		},
+		{
+			"name": "passagens - TEGRA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"from\": \"BSB\",\n    \"to\": \"VCP\",\n    \"date\": \"2019-02-10\"\n}"
+				},
+				"url": {
+					"raw": "https://api-voadora.dev.tegra.com.br/flight",
+					"protocol": "https",
+					"host": [
+						"api-voadora",
+						"dev",
+						"tegra",
+						"com",
+						"br"
+					],
+					"path": [
+						"flight"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "passagens",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"siglaAeroportoOrigem\": \"A\",\n    \"siglaAeroportoDestino\": \"B\",\n    \"data\": \"2019-01-01T00:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/tegra-voos-0.0.1-SNAPSHOT/passagens/teste",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tegra-voos-0.0.1-SNAPSHOT",
+								"passagens",
+								"teste"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Mar 2019 02:08:58 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2019-03-28T02:08:58.930+0000\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"No message available\",\n    \"path\": \"/tegra-voos-0.0.1-SNAPSHOT/passagens/teste\"\n}"
+				}
+			]
+		},
+		{
+			"name": "teste",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/tegra-voos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tegra-voos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "passagens",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificadorVoo\": \"A\",\n    \"horarioSaida\": \"2019-01-01T00:00:00.000Z\",\n    \"horarioChegada\": \"2019-01-01T00:00:00.000Z\",\n    \"valor\": 1000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/tegra-voos-0.0.1-SNAPSHOT/passagens/teste",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tegra-voos-0.0.1-SNAPSHOT",
+								"passagens",
+								"teste"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Mar 2019 02:08:58 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2019-03-28T02:08:58.930+0000\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"No message available\",\n    \"path\": \"/tegra-voos-0.0.1-SNAPSHOT/passagens/teste\"\n}"
+				}
+			]
+		}
+	]
+}
