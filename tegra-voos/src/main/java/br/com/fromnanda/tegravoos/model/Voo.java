@@ -1,19 +1,20 @@
 package br.com.fromnanda.tegravoos.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-public class Voo {
+public class Voo implements Comparable<Voo> {
 
 	@JsonProperty
 	private String origem;
 	@JsonProperty
 	private String destino;
 	@JsonProperty(access = Access.WRITE_ONLY)
-	private LocalDateTime data;
+	private LocalDate data;
 
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String voo;
@@ -38,8 +39,8 @@ public class Voo {
 	 * @param chegada
 	 * @param preco
 	 */
-	public Voo(String origem, String destino, LocalDateTime data, String voo, LocalDateTime saida,
-			LocalDateTime chegada, BigDecimal preco) {
+	public Voo(String origem, String destino, LocalDate data, String voo, LocalDateTime saida, LocalDateTime chegada,
+			BigDecimal preco) {
 		this.origem = origem;
 		this.destino = destino;
 		this.data = data;
@@ -65,11 +66,11 @@ public class Voo {
 		this.destino = destino;
 	}
 
-	public LocalDateTime getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(LocalDateTime data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 
@@ -103,6 +104,23 @@ public class Voo {
 
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
+	}
+
+	@Override
+	public int compareTo(Voo outroVoo) {
+
+		LocalDate d1 = this.saida.toLocalDate();
+		LocalDate d2 = outroVoo.saida.toLocalDate();
+
+		if (d1.isBefore(d2)) {
+			return -1;
+		}
+
+		if (d1.isAfter(d2)) {
+			return 1;
+		}
+
+		return 0;
 	}
 
 }

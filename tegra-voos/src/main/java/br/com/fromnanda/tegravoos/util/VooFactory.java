@@ -25,7 +25,7 @@ public class VooFactory {
 		voo.setDestino(valoresLinha[2]);
 
 		String data = valoresLinha[3];
-		voo.setData(converteDateEHora(data, "00:00"));
+		voo.setData(converteData(data));
 		voo.setSaida(converteDateEHora(data, valoresLinha[4]));
 		voo.setChegada(converteDateEHora(data, valoresLinha[5]));
 
@@ -43,7 +43,7 @@ public class VooFactory {
 		voo.setDestino(jsonObject.get("destino").getAsString());
 
 		String dataSaida = jsonObject.get("data_saida").getAsString();
-		voo.setData(converteDateEHora(dataSaida, "00:00"));
+		voo.setData(converteData(dataSaida));
 		voo.setSaida(converteDateEHora(dataSaida, jsonObject.get("saida").getAsString()));
 		voo.setChegada(converteDateEHora(dataSaida, jsonObject.get("chegada").getAsString()));
 

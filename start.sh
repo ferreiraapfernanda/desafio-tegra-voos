@@ -1,0 +1,2 @@
+/usr/lib/jvm/java-8-openjdk-amd64/bin/java -Djava.security.egd=file:/dev/./urandom -jar tegra-voos-backend.jar &
+/usr/lib/jvm/java-8-openjdk-amd64/bin/java -Djava.security.egd=file:/dev/./urandom -jar tegra-voos-app.jar

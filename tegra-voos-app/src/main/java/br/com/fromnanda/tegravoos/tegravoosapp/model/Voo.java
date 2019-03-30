@@ -1,29 +1,21 @@
-package br.com.fromnanda.tegravoos.dto;
+package br.com.fromnanda.tegravoos.tegravoosapp.model;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
-public class CriterioBuscaDTO {
+public class Voo {
 
-	@JsonProperty
 	private String origem;
-	@JsonProperty
 	private String destino;
-	@JsonProperty
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate data;
 
-	public CriterioBuscaDTO() {
-
+	public Voo() {
 	}
 
-	/**
-	 * 
-	 * @param origem
-	 * @param destino
-	 * @param data
-	 */
-	public CriterioBuscaDTO(String origem, String destino, LocalDate data) {
+	public Voo(String origem, String destino, LocalDate data) {
+		super();
 		this.origem = origem;
 		this.destino = destino;
 		this.data = data;

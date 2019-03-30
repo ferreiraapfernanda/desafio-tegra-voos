@@ -1,43 +1,31 @@
-package br.com.fromnanda.tegravoos.dto;
+package br.com.fromnanda.tegravoos.tegravoosapp.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.fromnanda.tegravoos.model.Voo;
+public class Escala {
 
-public class VooDTO {
-
-	@JsonProperty
 	private String origem;
-	@JsonProperty
 	private String destino;
-	@JsonProperty
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime saida;
-	@JsonProperty
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime chegada;
-	@JsonProperty
-	private List<Voo> trechos;
+	private BigDecimal preco;
 
-	public VooDTO() {
-		
+	public Escala() {
+		super();
 	}
 
-	/**
-	 * 
-	 * @param origem
-	 * @param destino
-	 * @param saida
-	 * @param chegada
-	 * @param trechos
-	 */
-	public VooDTO(String origem, String destino, LocalDateTime saida, LocalDateTime chegada, List<Voo> trechos) {
+	public Escala(String origem, String destino, LocalDateTime saida, LocalDateTime chegada, BigDecimal preco) {
+		super();
 		this.origem = origem;
 		this.destino = destino;
 		this.saida = saida;
 		this.chegada = chegada;
-		this.trechos = trechos;
+		this.preco = preco;
 	}
 
 	public String getOrigem() {
@@ -72,12 +60,12 @@ public class VooDTO {
 		this.chegada = chegada;
 	}
 
-	public List<Voo> getTrechos() {
-		return trechos;
+	public BigDecimal getPreco() {
+		return preco;
 	}
 
-	public void setTrechos(List<Voo> trechos) {
-		this.trechos = trechos;
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 
 }

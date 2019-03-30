@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<link rel="stylesheet" href="main.css">
+
+<link rel="stylesheet"
+	href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!--Font Awesome -->
+<link rel="stylesheet"
+	href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+
+<title>Tegra Voos App</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+
+	<nav class="navbar navbar-dark bg-primary text-light">
+		<a class="navbar-brand" href="#">Tegra Voos App</a>
+		<div class="mr-sm-2">
+			<span class="small"><a href="https://fromnanda.github.com/"
+				target="_blank">Fernanda Aparecida Ferreira</a></span>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<h1 class="mt-5">Busca de Voos</h1>
+
+		<form action="#" th:action="@{/}" th:object="${voo}" method="post">
+			<div class="row">
+				<div class="col-lg-6 col-md-12">
+					<div class="form-group">
+						<label for="aeroportoOrigem">Aeroporto de Origem</label> <select
+							class="form-control" id="aeroportoOrigem" name="aeroportoOrigem"
+							th:field="*{origem}">
+							<option th:each="aeroporto : ${aeroportos}"
+								th:value="${aeroporto.sigla}"
+								th:text="${aeroporto.sigla} + ' - ' + ${aeroporto.nome}"></option>
+						</select>
+
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-12">
+					<div class="form-group">
+						<label for="aeroportoDestino">Aeroporto de Destino</label> <select
+							class="form-control" id="aeroportoDestino"
+							name="aeroportoDestino" th:field="*{destino}">
+							<option th:each="aeroporto : ${aeroportos}"
+								th:value="${aeroporto.sigla}"
+								th:text="${aeroporto.sigla} + ' - ' + ${aeroporto.nome}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-lg-6 col-md-12">
+					<label class="control-label" for="data"> Data de Saída </label>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1"><i
+								class="fa fa-calendar"> </i></span>
+						</div>
+						<input class="form-control" id="data" name="data"
+							placeholder="DD/MM/AAAA" type="text" th:field="*{data}" required />
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-12 d-flex align-items-center">
+					<button type="submit" class="btn btn-primary">Pesquisar</button>
+				</div>
+			</div>
+		</form>
+
+		<div th:switch="${voos}" class="mt-3">
+			<h2 th:case="null"></h2>
+
+			<div th:case="*">
+				<table class="table table-striped table-responsive-lg">
+					<thead class="thead-light">
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Origem</th>
+							<th scope="col">Destino</th>
+							<th scope="col">Saída</th>
+							<th scope="col">Chegada</th>
+							<th scope="col">Preço Total</th>
+							<th scope="col">Tempo Total</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${voos.empty}">
+							<td colspan="8" class="text-danger">Não foram encontrados
+								voos!</td>
+						</tr>
+						<tr th:each="voo : ${voos}">
+							<td th:text="${(voos.indexOf(voo) + 1)}"></td>
+							<td th:text="${voo.origem}"></td>
+							<td th:text="${voo.destino}"></td>
+							<td th:text="${#temporals.format(voo.saida, 'dd-MM-yyyy HH:mm')}"></td>
+							<td
+								th:text="${#temporals.format(voo.chegada, 'dd-MM-yyyy HH:mm')}"></td>
+							<td th:text="'R$ ' + ${voo.precoTotal}"></td>
+							<td th:text="${voo.tempoTotal}"></td>
+							<td>
+								<button type="button" class="btn btn-secondary btn-sm"
+									data-toggle="modal"
+									th:attr="data-target='#modalEscalas_' + ${(voos.indexOf(voo) + 1)}">
+									Exibir</button> <!-- Modal -->
+								<div class="modal fade"
+									th:id="'modalEscalas_' + ${(voos.indexOf(voo) + 1)}"
+									tabindex="-1" role="dialog" aria-labelledby="modalEscalasTitle"
+									aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="modalEscalasTitle">Mais
+													informações</h5>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body table-responsive">
+												<table class="table flex-nowrap">
+													<thead class="thead-light">
+														<tr>
+															<th scope="col">#</th>
+															<th scope="col">Origem</th>
+															<th scope="col">Destino</th>
+															<th scope="col">Saída</th>
+															<th scope="col">Chegada</th>
+															<th scope="col">Preço</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="escala : ${voo.trechos}">
+															<td th:text="${(voo.trechos.indexOf(escala) +1 )}"></td>
+															<td th:text="${escala.origem}"></td>
+															<td th:text="${escala.destino}"></td>
+															<td
+																th:text="${#temporals.format(escala.saida, 'dd-MM-yyyy HH:mm')}"></td>
+															<td
+																th:text="${#temporals.format(escala.chegada, 'dd-MM-yyyy HH:mm')}"></td>
+															<td th:text="'R$ ' + ${escala.preco}"></td>
+														</tr>
+												</table>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Fechar</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
+	<!-- Include Date Range Picker -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
+	<script>
+		$(document).ready(
+				function() {
+					var date_input = $('input[name="data"]'); //our date input has the name "date"
+					var container = $('.bootstrap-iso form').length > 0 ? $(
+							'.bootstrap-iso form').parent() : "body";
+					date_input.datepicker({
+						format : 'dd/mm/yyyy',
+						container : container,
+						todayHighlight : true,
+						autoclose : true,
+					})
+
+				});
+	</script>
+
+</body>
+
+</html>

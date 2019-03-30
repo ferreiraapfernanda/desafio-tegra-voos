@@ -1,3 +1,7 @@
-FROM jboss/wildfly
-EXPOSE 8080
-COPY tegra-voos/target/tegra-voos-0.0.1-SNAPSHOT.war /opt/jboss/wildfly/standalone/deployments/tegra-voos-backend.war
+FROM java:8
+
+ADD tegra-voos/target/tegra-voos.jar tegra-voos-backend.jar
+ADD tegra-voos-app/target/tegra-voos-app.jar tegra-voos-app.jar
+ADD start.sh .
+
+CMD ["sh", "start.sh"]

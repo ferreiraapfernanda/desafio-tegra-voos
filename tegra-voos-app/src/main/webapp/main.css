@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+td, th {
+	white-space: nowrap;
+}
+
+.modal-dialog {
+	max-width: fit-content;
+}
+
+.navbar a {
+	color: white;
+}

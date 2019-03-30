@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,103 +22,91 @@ import br.com.fromnanda.tegravoos.util.VooFactory;
 public class VooService {
 
 	@Autowired
-	private VooRepository repository;
+	private VooRepository vooRepository;
 
 	public List<VooDTO> voosDisponiveis(CriterioBuscaDTO criterioBuscaDTO) throws FileNotFoundException, IOException {
 
-		List<Voo> todosOsVoos = repository.listar();
+		List<Voo> todosOsVoos = vooRepository.listar();
 
 		List<VooDTO> voosDisponiveis = new ArrayList<VooDTO>();
 
 		voosDisponiveis.addAll(comEscala(criterioBuscaDTO, todosOsVoos));
 		voosDisponiveis.addAll(semEscala(criterioBuscaDTO, todosOsVoos));
 
-		// TODO ordenar
+		voosDisponiveis.sort(Comparator.comparing(VooDTO::getSaida));
 
 		return voosDisponiveis;
 	}
 
 	private Collection<? extends VooDTO> semEscala(CriterioBuscaDTO criterioBuscaDTO, List<Voo> todosOsVoos) {
-		List<Voo> voosDiretosLista = todosOsVoos.stream().filter(v -> possuiTodosOsCriterios(v, criterioBuscaDTO))
+		List<Voo> voosDiretosLista = todosOsVoos.stream().filter(v -> ehVooDireto(v, criterioBuscaDTO))
 				.collect(Collectors.toList());
 		return VooFactory.formataLista2ListaVooDTO(voosDiretosLista);
 	}
 
 	private Collection<? extends VooDTO> comEscala(CriterioBuscaDTO criterioBuscaDTO, List<Voo> todosOsVoos) {
+
 		List<VooDTO> retorno = new ArrayList<VooDTO>();
 
-		List<Voo> voosOrigem = todosOsVoos.stream().filter(v -> !possuiTodosOsCriterios(v, criterioBuscaDTO))
-				.collect(Collectors.toList());
-		List<Voo> voosDeEscala = new ArrayList<Voo>(voosOrigem);
+		todosOsVoos.sort(Comparator.comparing(Voo::getData));
 
-		for (Voo vooDeOrigem : voosOrigem) {
+		List<Voo> voosIniciaisEscala = todosOsVoos.stream().filter(v -> ehVooDePartida(criterioBuscaDTO, v))
+				.collect(Collectors.toList());
+		voosIniciaisEscala.sort(Comparator.comparing(Voo::getData));
+
+		List<Voo> voosFinaisEscala = todosOsVoos.stream().filter(v -> ehVooDeChegada(criterioBuscaDTO, v))
+				.collect(Collectors.toList());
+		voosFinaisEscala.sort(Comparator.comparing(Voo::getData));
+
+		for (Voo vooInicial : voosIniciaisEscala) {
 
 			List<Voo> escalas = new ArrayList<Voo>();
+			escalas.add(vooInicial);
 
-			/**
-			 * Ponto de partida
-			 */
-			if (vooDeOrigem.getOrigem().equals(criterioBuscaDTO.getOrigem())
-					&& vooDeOrigem.getData().toLocalDate().equals(criterioBuscaDTO.getData().toLocalDate())) {
+			for (Voo vooFinal : voosFinaisEscala) {
 
-				escalas.add(vooDeOrigem);
+				if (ehUmaEscalaViavel(vooInicial, vooFinal)) {
 
-				boolean chegouAoDestino = false;
-				int qtdTotalDeVoos = voosDeEscala.size();
-				int index = 0;
+					VooDTO dto = new VooDTO();
+					dto.setChegada(escalas.get(escalas.size() - 1).getChegada());
+					dto.setSaida(escalas.get(0).getSaida());
 
-				while (!chegouAoDestino && index < qtdTotalDeVoos) {
-					
-					if(index == 0) {
-						index++;
-						continue;
-					}
+					dto.setOrigem(escalas.get(0).getOrigem());
+					dto.setDestino(escalas.get(escalas.size() - 1).getDestino());
 
-					Voo vooAtual = voosDeEscala.get(index);
-					Voo ultimoVoo = escalas.get(escalas.size() - 1);
-
-					/**
-					 * é uma escala viável
-					 */
-					if (ultimoVoo.getDestino().equals(vooAtual.getOrigem())
-							&& naoEstavoltandoAoUltimoAeroporto(ultimoVoo, vooAtual)
-							&& menosDeDozeHoras(vooAtual, ultimoVoo)) {
-						escalas.add(vooAtual);
-					} // TODO validar se essa função está correta
-
-					if (ultimoVoo.getDestino().equals(criterioBuscaDTO.getDestino())) {
-						chegouAoDestino = true;
-					}
-
-					index++;
-
+					dto.setTrechos(escalas);
 				}
-				
-				VooDTO dto = new VooDTO();
-				dto.setChegada(escalas.get(escalas.size()-1).getChegada());
-				dto.setSaida(escalas.get(0).getSaida());
-				
-				dto.setOrigem(criterioBuscaDTO.getOrigem());
-				dto.setDestino(criterioBuscaDTO.getDestino());
-				
-				dto.setTrechos(escalas);
-				
-				retorno.add(dto);
-
 			}
-
 		}
+
+		retorno.sort(Comparator.comparing(VooDTO::getSaida));
 
 		return retorno;
 	}
 
-	private boolean naoEstavoltandoAoUltimoAeroporto(Voo ultimoVoo, Voo vooAtual) {
+	private boolean ehUmaEscalaViavel(Voo vooInicial, Voo vooFinal) {
+		return vooInicial.getDestino().equalsIgnoreCase(vooFinal.getOrigem()) && menosDeDozeHoras(vooInicial, vooFinal)
+				&& naoEstaVoltandoAoUltimoAeroporto(vooFinal, vooInicial);
+	}
+
+	private boolean ehVooDeChegada(CriterioBuscaDTO criterioBuscaDTO, Voo v) {
+		return !v.getOrigem().equalsIgnoreCase(criterioBuscaDTO.getOrigem())
+				&& v.getDestino().equalsIgnoreCase(criterioBuscaDTO.getDestino());
+	}
+
+	private boolean ehVooDePartida(CriterioBuscaDTO criterioBuscaDTO, Voo v) {
+		return v.getOrigem().equalsIgnoreCase(criterioBuscaDTO.getOrigem())
+				&& v.getData().equals(criterioBuscaDTO.getData())
+				&& !v.getDestino().equalsIgnoreCase(criterioBuscaDTO.getDestino());
+	}
+
+	private boolean naoEstaVoltandoAoUltimoAeroporto(Voo ultimoVoo, Voo vooAtual) {
 		return !(ultimoVoo.getOrigem().equals(vooAtual.getDestino()));
 	}
 
-	private boolean menosDeDozeHoras(Voo vooAtual, Voo voo) {
+	private boolean menosDeDozeHoras(Voo vooAtual, Voo ultimoVoo) {
 
-		long until = vooAtual.getChegada().until(voo.getSaida(), ChronoUnit.HOURS);
+		long until = vooAtual.getChegada().until(ultimoVoo.getSaida(), ChronoUnit.HOURS);
 
 		if (until > 0 && until <= 12) {
 			return true;
@@ -126,10 +115,10 @@ public class VooService {
 		return false;
 	}
 
-	private boolean possuiTodosOsCriterios(Voo v, CriterioBuscaDTO criterioBuscaDTO) {
+	private boolean ehVooDireto(Voo v, CriterioBuscaDTO criterioBuscaDTO) {
 		return (v.getOrigem().equals(criterioBuscaDTO.getOrigem()))
 				&& (v.getDestino().equals(criterioBuscaDTO.getDestino()))
-				&& (v.getData().toLocalDate().equals(criterioBuscaDTO.getData().toLocalDate()));
+				&& (v.getData().equals(criterioBuscaDTO.getData()));
 	}
 
 }
