@@ -7,22 +7,32 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("Voo")
 public class Voo implements Comparable<Voo> {
 
 	@JsonProperty
+	@ApiModelProperty(value = "Sigla do Aeroporto de Origem", required = true, example = "VIX")
 	private String origem;
 	@JsonProperty
+	@ApiModelProperty(value = "Sigla do Aeroporto de Destino", required = true, example = "AJU")
 	private String destino;
+	@ApiModelProperty(value = "Data de saída do voo", required = true, example = "2019-02-10")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private LocalDate data;
-
+	@ApiModelProperty(value = "Campo identificador do voo", required = true, example = "A123B456")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String voo;
 	@JsonProperty
+	@ApiModelProperty(value = "Data e hora de saída do voo", required = true, example = "2019-02-10T18:30:00")
 	private LocalDateTime saida;
 	@JsonProperty
+	@ApiModelProperty(value = "Data e hora de chegada do voo", required = true, example = "2019-02-10T18:30:00")
 	private LocalDateTime chegada;
 	@JsonProperty
+	@ApiModelProperty(value = "Preco da passagem", required = true, example = "300.00")
 	private BigDecimal preco;
 
 	public Voo() {

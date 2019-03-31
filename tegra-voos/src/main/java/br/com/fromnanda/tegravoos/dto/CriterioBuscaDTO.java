@@ -4,13 +4,20 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("CriterioBuscaDTO")
 public class CriterioBuscaDTO {
 
 	@JsonProperty
+	@ApiModelProperty(value = "Sigla do Aeroporto de Origem", required = true, example = "VIX")
 	private String origem;
 	@JsonProperty
+	@ApiModelProperty(value = "Sigla do Aeroporto de Destino", required = true, example = "AJU")
 	private String destino;
 	@JsonProperty
+	@ApiModelProperty(value = "Data do voo", required = true, example = "2019-02-10")
 	private LocalDate data;
 
 	public CriterioBuscaDTO() {

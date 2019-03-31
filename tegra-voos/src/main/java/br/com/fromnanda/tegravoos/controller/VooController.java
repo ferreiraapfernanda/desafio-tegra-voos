@@ -15,6 +15,8 @@ import br.com.fromnanda.tegravoos.dto.VooDTO;
 import br.com.fromnanda.tegravoos.service.VooService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Api(value = "API REST Voo")
 @RestController
@@ -25,6 +27,10 @@ public class VooController {
 	private VooService service;
 
 	@ApiOperation(value = "Retorna uma lista de voos disponíveis a partir do critério de busca especificado")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Sucesso", response = VooDTO[].class),
+			@ApiResponse(code = 204, message = "Sem conteúdo"), @ApiResponse(code = 401, message = "Sem autorização"),
+			@ApiResponse(code = 403, message = "Proibido"), @ApiResponse(code = 404, message = "Não encontrado"),
+			@ApiResponse(code = 500, message = "Erro interno no servidor") })
 	@PostMapping()
 	public List<VooDTO> voosDisponiveis(@RequestBody CriterioBuscaDTO criterioBuscaDTO) {
 

@@ -4,15 +4,22 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("Aeroporto")
 public class Aeroporto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonProperty
+	@ApiModelProperty(value = "Nome do aeroporto", required = true, example = "Aeroporto Internacional de Guarulhos")
 	private String nome;
 	@JsonProperty
+	@ApiModelProperty(value = "Sigla do aeroporto", required = true, example = "GRU")
 	private String sigla;
 	@JsonProperty
+	@ApiModelProperty(value = "Cidade onde está localizado o aeropotto", required = true, example = "Guarulhos")
 	private String cidade;
 
 	public Aeroporto() {

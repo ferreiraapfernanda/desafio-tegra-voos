@@ -19,17 +19,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"origem\": \"BSB\",\n    \"destino\": \"VCP\",\n    \"data\": \"2019-02-10T00:00:00.000Z\"\n}"
+					"raw": "{\n    \"origem\": \"VIX\",\n    \"destino\": \"AJU\",\n    \"data\": \"2019-02-10\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/tegra-voos/voos-disponiveis",
+					"raw": "http://localhost:8080/voos-disponiveis",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"tegra-voos",
 						"voos-disponiveis"
 					]
 				}
@@ -105,7 +104,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"from\": \"BSB\",\n    \"to\": \"VCP\",\n    \"date\": \"2019-02-10\"\n}"
+					"raw": "{\n    \"from\": \"BSB\",\n    \"to\": \"VCP\",\n    \"date\": \"2019-02-11\"\n}"
 				},
 				"url": {
 					"raw": "https://api-voadora.dev.tegra.com.br/flight",
@@ -263,6 +262,29 @@
 					"body": "{\n    \"timestamp\": \"2019-03-28T02:08:58.930+0000\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"No message available\",\n    \"path\": \"/tegra-voos-0.0.1-SNAPSHOT/passagens/teste\"\n}"
 				}
 			]
+		},
+		{
+			"name": "aeroportos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/aeroportos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aeroportos"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
